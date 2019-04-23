@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>待办事件表</title>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        .todo {
+            width: 400px;
+            margin:100px auto;
+            border: 1px solid gray;
+            background:#999;
+            padding:25px ;
+            color:#000;
+            overflow:hidden;
+
+        }
+            header {
+                line-height:50px;
+                 text-align:center;
+                font-size:30px;
+
+            }
+            input[type="checkbox"] {
+                margin-left:50px;
+            }
+            a {
+                float: right;
+            }
+            p {
+                font-size:15px;
+
+            }
+            strong {
+                font-size:18px;
+                color:#0ff;
+            }
+    </style>
+</head>
+<body ng-app="app">
+
+<div class="todo" ng-controller="todoCtrl">
+     <header>
+         TodoList
+     </header><!-- /header -->
+    <form ng-submit="add()">
+       <label>添加事项:<input type="text" ng-model='text' autofocus="autofocus"></label>
+    </form>
+
+    <dl>
+        <dt>待办事项:</dt>
+        <dd ng-repeat="(index,todo) in todos">
+            <input type="checkbox" ng-click="clickk(index)">
+            <span>{{todo.text}}</span>
+            <a href="#" ng-click="del(todos,index)">删除</a>
+
+        </dd>
+ <br>
+        <dt>已办事项:</dt>
+        <dd ng-repeat="(index,todo) in doneTodo" >
+
+            <input type="checkbox" ng-checked="todo.flag"> <del>{{todo.text}}</del><a href="#" ng-click="del(doneTodo,index)">删除</a>
+            <br />
+
+        </dd>
+
+    </dl>
+    <br>
+    <br />
+
+   <p> 已完成<strong>{{doneTodo.length}}</strong>个事项</p>
+
+   <p>未完成<strong>{{todos.length}} </strong>个事项</p>
+</div>
+</body>
+<script src="angular-1.5.8/angular.min.js"></script>
+<script>
+
+      // 定义模块
+      var app = angular.module('app',[]);
+
+      // 控制器
+          app.controller('todoCtrl',['$scope',function($scope){
+                // 待办事项
+                $scope.todos=[];
+                // 已办完事项
+                $scope.doneTodo=[];
+
+                $scope.add=function(){
+
+                        // alert("message");
+                    $scope.todos.push({text:$scope.text,flag:false});
+                    $scope.text="";
+                };
+
+                $scope.clickk= function(index){
+                   var todo=$scope.todos.splice(index,1)[0];
+                    todo.flag=true;
+                    $scope.doneTodo.push(todo);
+                };
+
+                $scope.del = function(tod,key){
+
+                        tod.splice(key,1);
+                };
+
+                // 一版事项点击的时候让数据回到待办事项
+                   // 待续
+          }]);
+
+
+</script>
+</html>
